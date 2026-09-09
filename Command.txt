@@ -1,0 +1,7 @@
+"command fo Github" 
+blogsite\mysite
+
+git init
+git add .
+git commit -m "explain"
+git push
