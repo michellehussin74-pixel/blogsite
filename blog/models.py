@@ -1,26 +1,22 @@
 from django.db import models
 from django.utils import timezone
-# Create your models here.
-class Post(models.Model): 
-    title= models.CharField(max_length=250)
+from django.contrib.auth.models import User
+
+class Post(models.Model):
+    class Status(models.TextChoices):
+        DRAFT = 'DF', 'DRAFT'
+        PUBLISH = 'PB', 'PUBLISH'
+        
+    title = models.CharField(max_length=250)
     slug = models.SlugField(max_length=250)
+    author = models.ForeignKey(User, on_delete=models.CASCADE, 
+    related_name='blogpost')
     body = models.TextField()
     publish = models.DateTimeField(default=timezone.now)
     created = models.DateTimeField(auto_now_add=True)
-
-
-
-
-class Meta:
-    ordering = ['-publish']
-    indexes = [
-       models.index(field=['-publish'])
-       
-    ]
-
-
-
-    def __str__(self):
-         return self.title
-   
+    status = models.CharField(
+        max_length=2,
+        choices=Status.choices,
+        default=Status.DRAFT
+    )
 
